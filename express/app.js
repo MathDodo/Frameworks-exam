@@ -22,23 +22,39 @@ app.use(express.static('../dist/mandatory_exercise'));
 // errors in the browser
 // Read more here: https://en.wikipedia.org/wiki/Cross-origin_resource_sharing
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE");
+
+  // intercepts OPTIONS method
+  if ('OPTIONS' === req.method) {
+    // respond with 200
+    console.log("Allowing OPTIONS");
+    res.send(200);
+  }
+  else {
+    // move on
     next();
+  }
 });
 
-app.use(checkJwt({secret: 'myTopSecret123'}).unless(
-  {path: '/api/ReviewData'},
-  {path: '/api/Users'},
-  {path: '/api/authentication'}
+app.use(
+    checkJwt({secret: 'myTopSecret123'}).unless(
+    {
+      path: 
+      [
+        '/api/reviewData',
+        '/api/authentication',
+        '/api/users'
+      ],
+    }
 ));
 
 app.use((err, req, res, next) => 
 {
   if (err.name === 'UnauthorizedError') 
   {
-    res.redirect('../login');
+    res.json({ error: err.message });
   }
 });
 
@@ -51,10 +67,9 @@ app.get('/api/PostReview', (req, res) => db.Getreviews({}).then((data) => res.js
 
 app.post('/api/PostReview', (req, res) => 
 {
-    let text = req.body.text;
-    let details = req.body.details;
+  console.log(req.body);
 
-    db.insertData(text, details).then((newId) => 
+    db.insertData(req.body).then((newId) => 
     {
       res.json({id : newId});
     });
@@ -91,7 +106,9 @@ app.post('/api/Users', (req, res) =>
             {
               if (result) 
               {
-                const payload = {username: username,admin: false};
+                console.log('Succes');
+                const payload = {username: username, admin: false};
+
                 const token = jwt.sign(payload, 'myTopSecret123', { expiresIn: '1h' });
         
                 res.json({

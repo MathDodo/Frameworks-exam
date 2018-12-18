@@ -4,6 +4,7 @@ import { switchMap } from "rxjs/operators";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { environment } from "../environments/environment";
 import { AuthService } from './auth-service.service';
+import { Router } from '@angular/router';
 
 interface User
 {
@@ -17,7 +18,7 @@ interface Reviewing
   title: string,
   auther: string,
   review: string,
-  score: number
+  rating: number
 }
 
 @Injectable({
@@ -27,12 +28,15 @@ export class DataService
 {
   private url_prefix : string = environment.express_url;
   private httpOptions = {};
-  
+  //'Authorization': 'Bearer ' + this.auth.GetToken()
   reviews : Reviewing[] = [];
   users: User[] = [];
-  constructor(private http : HttpClient, private auth : AuthService) 
+  activeUser: string = "";
+
+  constructor(private http : HttpClient, private auth : AuthService, private router : Router) 
   {
     if (this.auth.IsLoggedIn()) {
+      this.activeUser = this.auth.GetLoginName();
       this.httpOptions = {
         headers: new HttpHeaders({
           'Content-Type':  'application/json',
@@ -40,7 +44,6 @@ export class DataService
         })
       };
     }
-    console.log("Starting poller.");
     timer(0, 1000)
       .pipe(switchMap(
         _ => this.http.get<Reviewing[]>(this.url_prefix+'/api/ReviewData'))
@@ -49,9 +52,17 @@ export class DataService
     })
   }
 
-  GetData(theId: string) 
+  PostReview(urlID: string, title: string, review: string, rating: number)
   {
-    return this.reviews.find(d => d.urlID == theId);
+    if(this.activeUser != ""){
+      let reviewing: Reviewing = {urlID: urlID, title: title, review: review, rating: rating, auther: this.activeUser};
+
+      console.log("Posting");
+
+      this.http.post<Reviewing>(this.url_prefix+ '/api/PostReview', reviewing, this.httpOptions).subscribe(data => {
+        console.log(data);
+      });
+    }
   }
 
   GetUsers(register) 
@@ -66,9 +77,13 @@ export class DataService
   Login(username: string, password: string)
   {
     let user: User = {username: username, password: password};
+
     this.http.post<any>(this.url_prefix+ '/api/authentication', user).subscribe(data => 
       {
+        this.activeUser = user.username;
         this.auth.SetToken(data.token);
+        this.auth.SetLoginName(this.activeUser);
+        console.log("Got token " + this.auth.GetToken());
 
         this.httpOptions = {
           headers: new HttpHeaders({
@@ -88,8 +103,11 @@ export class DataService
 
   AccesReviewWriting()
   {
-    this.http.get<Reviewing[]>(this.url_prefix+'/api/PostReview', this.httpOptions).subscribe(reviews => {
-      this.reviews = reviews;
-  });
+      return this.auth.IsLoggedIn();
+  }
+
+  Logout()
+  {
+    this.auth.Logout();
   }
 }

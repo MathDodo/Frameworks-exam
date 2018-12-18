@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-review-page',
@@ -8,10 +9,29 @@ import { DataService } from '../data.service';
 })
 export class ReviewPageComponent implements OnInit {
 
-  constructor(private service : DataService) { }
+  title: string = "";
+  url: string = "";
+  review: string = "";
+  rating: number = 3;
+
+  constructor(private service : DataService, private router: Router) { }
 
   ngOnInit() {
-    this.service.AccesReviewWriting();
+    
+    if(!this.service.AccesReviewWriting())
+    {
+      this.router.navigateByUrl('/login');
+    }
   }
 
+  PostReview()
+  {
+    var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+
+    if(this.title != "" && this.review != "" && pattern.test(this.url))
+    {
+      console.log('Posting');
+      this.service.PostReview(this.url, this.title, this.review, this.rating);
+    }
+  }
 }

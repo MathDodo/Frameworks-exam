@@ -6,7 +6,6 @@ let client = {};
 module.exports.connect = connect;
 module.exports.Getreviews = Getreviews;
 module.exports.removeData = removeData;
-module.exports.generateTestData = generateTestData;
 module.exports.countData = countData;
 module.exports.insertData = insertData;
 module.exports.GetUsers = GetUsers;
@@ -31,7 +30,6 @@ function Getreviews(query)
   {
     client.db(dbName).collection("Reviews").find(query).toArray().then(
       (documents) => {
-        console.log("Got Reviews");
         resolve(documents);
       }).catch((error) => console.error(error));
   });
@@ -44,7 +42,6 @@ function GetUsers(query)
   {
     client.db(dbName).collection("Users").find(query).toArray().then(
       (documents) => {
-        console.log("Got users");
         resolve(documents);
       }).catch((error) => console.error(error));
   });
@@ -59,17 +56,15 @@ function AddUser(username, password)
 
     client.db(dbName).collection("Users").insertOne(user).then(
       (result) => {
-        console.log("Inserted user");
         resolve(result.insertedId);
       }).catch((error) => console.error(error));
   });
 }
 
-function insertData(text, details) 
+function insertData(data) 
 {
   return new Promise((resolve,reject) => 
-  {
-    let data = {text : text, details: details};
+  {    
     client.db(dbName).collection("Reviews").insertOne(data).then(
       (result) => {
         console.log("Inserted Review");
@@ -84,7 +79,6 @@ function countData(query)
   {
     client.db(dbName).collection("Reviews").countDocuments(query).then(
       (count) => {
-        console.log("Counted Reviews");
         resolve(count);
       }).catch((error) => console.error(error));
   });
@@ -97,26 +91,6 @@ function removeData(query)
       (documents) => {
         console.log("Removed data");
       }).catch((error) => console.error(error));
-  });
-}
-
-function generateTestData(count) 
-{
-  return new Promise((resolve,reject) => {
-    const data = client.db(dbName).collection("data");
-
-    let insertData = [];
-    for (let i = 1; i <= count; i++) {
-      insertData.push({
-        text: "This is some text " + i,
-        details: "Some more details " + i
-      });
-    }
-
-    data.insertMany(insertData).then((result) => {
-      console.log(`Generated ${count} pieces of data`);
-      resolve(result);
-    }).catch((error) => console.error(error));
   });
 }
 

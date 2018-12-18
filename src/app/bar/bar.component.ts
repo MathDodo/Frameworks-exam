@@ -22,9 +22,4 @@ export class BarComponent implements OnInit {
   GetId() : string {
     return this.theId;
   }
-
-  GetData() : any {
-    return this.service.GetData(this.theId);
-  }
-
 }

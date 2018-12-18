@@ -6,24 +6,36 @@ import { Router } from "@angular/router";
 })
 export class AuthService {
 
-  storageKey: string = 'foobar-jwt';
+  tokenKey: string = 'webworldtoken-jwt';
+  userKey: string = 'webworldUser-jwt';
 
-  constructor(private router : Router) { }
+  constructor() { }
+
+  SetLoginName(username: string)
+  {
+    localStorage.setItem(this.userKey, username);
+  }
 
   SetToken(token: string) : void {
-    localStorage.setItem(this.storageKey, token)
+    localStorage.setItem(this.tokenKey, token)
+  }
+
+  GetLoginName()
+  {
+    return localStorage.getItem(this.userKey);
   }
 
   GetToken() : string {
-    return localStorage.getItem(this.storageKey);
+    return localStorage.getItem(this.tokenKey);
   }
 
   IsLoggedIn() : boolean {
     return this.GetToken() !== null;
   }
 
-  Logout() {
-    localStorage.removeItem(this.storageKey);
-    this.router.navigate(['/login']);
+  Logout() 
+  {
+    localStorage.removeItem(this.userKey);
+    localStorage.removeItem(this.tokenKey);
   }
 }
