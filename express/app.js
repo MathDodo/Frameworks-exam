@@ -46,6 +46,8 @@ app.use((err, req, res, next) =>
   }
 });
 
+app.get('/api/Test', (req, res) => res.json(req.body));
+
 /**** Routes ****/
 app.get('/api/ReviewData', (req, res) => db.Getreviews({}).then((data) => res.json(data)));
 
