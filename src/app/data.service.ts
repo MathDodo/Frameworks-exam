@@ -36,6 +36,8 @@ export class DataService
 
   constructor(private http : HttpClient, private auth : AuthService, private router : Router) 
   {
+    console.log('Start session');
+    
     if (this.auth.IsLoggedIn()) {
       this.activeUser = this.auth.GetLoginName();
       this.httpOptions = {
@@ -87,8 +89,6 @@ export class DataService
         this.activeUser = user.username;
         this.auth.SetToken(data.token);
         this.auth.SetLoginName(this.activeUser);
-        console.log("Got token " + this.auth.GetToken());
-
         this.httpOptions = {
           headers: new HttpHeaders({
             'Content-Type':  'application/json',
