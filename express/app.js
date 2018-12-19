@@ -38,21 +38,6 @@ app.use((req, res, next) => {
   }
 });
 
-app.use(
-    checkJwt({secret: 'myTopSecret123'}).unless(
-    {
-      path: 
-      [
-        '/api/ReviewData',
-        '/api/reviewData',
-        '/api/Authentication',
-        '/api/authentication',
-        '/api/Users',
-        '/api/users'
-      ],
-    }
-));
-
 app.use((err, req, res, next) => 
 {
   if (err.name === 'UnauthorizedError') 
@@ -66,9 +51,7 @@ app.get('/api/ReviewData', (req, res) => db.Getreviews({}).then((data) => res.js
 
 app.get('/api/Users', (req, res) => db.GetUsers({}).then((data) => res.json(data)));
 
-app.get('/api/PostReview', (req, res) => db.Getreviews({}).then((data) => res.json(data)));
-
-app.post('/api/PostReview', (req, res) => 
+app.post('/api/PostReview', checkJwt({secret: 'myTopSecret123'}), (req, res) => 
 {
     db.insertData(req.body).then((newId) => 
     {
