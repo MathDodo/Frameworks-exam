@@ -10,7 +10,7 @@ const checkJwt = require('express-jwt');
 const db = require('./db');
 
 /**** Configuration ****/
-const appName = "Frameworks_exam";
+const appName = "frameworksexam";
 const port = (process.env.PORT || 8080);
 const app = express();
 
