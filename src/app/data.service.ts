@@ -37,8 +37,17 @@ export class DataService
   constructor(private http : HttpClient, private auth : AuthService, private router : Router) 
   {
     console.log('Start session');
-    
-    if (this.auth.IsLoggedIn()) {
+
+    timer(0, 1000)
+    .pipe(switchMap(
+      _ => this.http.get<Reviewing[]>(this.url_prefix+'/api/ReviewData'))
+    ).subscribe(reviews => {
+      console.log(reviews);
+      this.reviews = reviews;
+  })
+
+    if (this.auth.IsLoggedIn()) 
+    {
       this.activeUser = this.auth.GetLoginName();
       this.httpOptions = {
         headers: new HttpHeaders({
@@ -47,13 +56,6 @@ export class DataService
         })
       };
     }
-    timer(0, 1000)
-      .pipe(switchMap(
-        _ => this.http.get<Reviewing[]>(this.url_prefix+'/api/ReviewData'))
-      ).subscribe(reviews => {
-        console.log(reviews);
-        this.reviews = reviews;
-    })
   }
 
   PostReview(urlID: string, title: string, review: string, rating: number)
@@ -68,9 +70,11 @@ export class DataService
 
   GetUsers(register) 
   {
+    console.log('Getting users');
+
      this.http.get<User[]>(this.url_prefix+'/api/Users').subscribe(users => {
         this.users = users;
-
+        console.log('Got users');
         register.RegisterReady(this.users);
     });
   }
