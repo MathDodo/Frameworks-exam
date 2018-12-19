@@ -3,11 +3,11 @@ import { DataService } from '../data.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-review-page',
-  templateUrl: './review-page.component.html',
-  styleUrls: ['./review-page.component.css']
+  selector: 'app-special-review',
+  templateUrl: './special-review.component.html',
+  styleUrls: ['./special-review.component.css']
 })
-export class ReviewPageComponent implements OnInit {
+export class SpecialReviewComponent implements OnInit {
 
   title: string = "";
   url: string = "";
@@ -18,6 +18,26 @@ export class ReviewPageComponent implements OnInit {
 
   ngOnInit() {
     
+    let holder = this.router.url.toString().split('/');
+    let varify = holder[holder.length -1];
+    let varification = false;
+    let data = this.service.GetReviews();
+
+    for(var i = 0; i < data.length; i++)
+    {
+      if(data[i].urlID.includes(varify))
+      {
+        varification = true;
+        this.url = data[i].url;
+        break;
+      }
+    }
+
+    if(!varification)
+    {
+      this.router.navigateByUrl('/main');
+    }
+
     if(!this.service.AccesReviewWriting())
     {
       this.router.navigateByUrl('/login');

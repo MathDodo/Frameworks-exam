@@ -1,0 +1,10 @@
+<P>Url search:</P>
+<input type="text" [(ngModel)]="searchUrl">
+<div *ngIf="IsValid() == false;then content else elseBlock"></div>    
+<ng-template #content>Search for a valid url.</ng-template>
+<ng-template #elseBlock>
+  <p *ngIf="HasReview() == false;">This url has no reviews.</p>
+</ng-template>
+<br>
+<button (click)="GoToDetails()">Search</button>
+

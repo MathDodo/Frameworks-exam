@@ -11,6 +11,10 @@ import { RegisterComponent } from './register/register.component';
 import { LoginComponent } from './login/login.component';
 import { ReviewPageComponent } from './review-page/review-page.component';
 import { ReviewViewerComponent } from './review-viewer/review-viewer.component';
+import { RegistrationSuccesComponent } from './registration-succes/registration-succes.component';
+import { DetailsComponent } from './details/details.component';
+import { SearchReviewsPageComponent } from './search-reviews-page/search-reviews-page.component';
+import { SpecialReviewComponent } from './special-review/special-review.component';
 
 
 
@@ -23,7 +27,11 @@ import { ReviewViewerComponent } from './review-viewer/review-viewer.component';
     RegisterComponent,
     LoginComponent,
     ReviewPageComponent,
-    ReviewViewerComponent
+    ReviewViewerComponent,
+    RegistrationSuccesComponent,
+    DetailsComponent,
+    SearchReviewsPageComponent,
+    SpecialReviewComponent
   ],
   imports: [
     BrowserModule,

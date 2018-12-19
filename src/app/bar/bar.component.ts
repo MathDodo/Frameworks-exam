@@ -11,15 +11,8 @@ export class BarComponent implements OnInit {
   private theId : string;
 
   constructor(
-    private route : ActivatedRoute,
-    private router : Router,
-    private service : DataService) { }
+   ) { }
 
   ngOnInit() {
-    this.theId = this.route.snapshot.paramMap.get('id');
-  }
-
-  GetId() : string {
-    return this.theId;
   }
 }

@@ -1,0 +1,9 @@
+<div>{{RealTimeUpdate()}}</div>
+<p>Url: {{url}}</p>
+<p>Average rating of this page: {{average}}</p>
+<p>Reviews of url:</p>
+<p *ngFor="let item of GetData(); let i = index;">
+  <button (click)="LookUpReview(i)">{{item.title}}</button>
+</p>
+<button (click)="SpecialReview()">Post review for url</button>
+

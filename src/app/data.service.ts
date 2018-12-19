@@ -14,6 +14,7 @@ interface User
 
 interface Reviewing
 {
+  url: string,
   urlID: string,
   title: string,
   auther: string,
@@ -55,12 +56,9 @@ export class DataService
   PostReview(urlID: string, title: string, review: string, rating: number)
   {
     if(this.activeUser != ""){
-      let reviewing: Reviewing = {urlID: urlID, title: title, review: review, rating: rating, auther: this.activeUser};
-
-      console.log("Posting");
+      let reviewing: Reviewing = {url: urlID, urlID: urlID.replace(/\s/g, "q").replace(/[^a-zA-Z ]/g, "q") + this.reviews.length.toString(), title: title, review: review, rating: rating, auther: this.activeUser};
 
       this.http.post<Reviewing>(this.url_prefix+ '/api/PostReview', reviewing, this.httpOptions).subscribe(data => {
-        console.log(data);
       });
     }
   }
@@ -72,6 +70,11 @@ export class DataService
 
         register.RegisterReady(this.users);
     });
+  }
+
+  GetReviews(): Reviewing[]
+  {
+    return this.reviews;
   }
 
   Login(username: string, password: string)
@@ -91,6 +94,8 @@ export class DataService
             'Authorization': `Bearer ${this.auth.GetToken()}`
           })
         };
+
+        this.router.navigateByUrl('/main');
       });
   }
 
@@ -109,5 +114,11 @@ export class DataService
   Logout()
   {
     this.auth.Logout();
+    this.activeUser = "";
+    this.router.navigateByUrl('/main');
+  }
+
+  GetName(){
+    return this.activeUser;
   }
 }

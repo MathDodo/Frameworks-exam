@@ -1,2 +1,12 @@
-<p><a routerLink="">Webworld</a></p>
+<body>
+    <div class="topnav">
+        <h1 id="title"><a routerLink="">Webworld</a></h1>
+        <p *ngIf="IsLoggedIn()" class="name">Logged in as: {{username}}</p>
+        <button (click)="UiLog()" class="button">{{uiLog}}</button>
+        <button (click)="GoToDetails()" class="button">Details</button>
+        <button (click)="Register()" *ngIf="IsLoggedIn() == false" class="button">Register</button>
+        <button (click)="GoToReviewWriting()" *ngIf="IsLoggedIn()" class="button">Write Review</button>
+    </div>    
+
+</body>
 <router-outlet></router-outlet>

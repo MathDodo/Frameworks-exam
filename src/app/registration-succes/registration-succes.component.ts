@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: 'app-registration-succes',
+  templateUrl: './registration-succes.component.html',
+  styleUrls: ['./registration-succes.component.css']
 })
-export class LoginComponent implements OnInit {
-
+export class RegistrationSuccesComponent implements OnInit {
   username: string = "";
   password: string = "";
 
@@ -16,7 +14,6 @@ export class LoginComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log("Login");
   }
 
   Login()

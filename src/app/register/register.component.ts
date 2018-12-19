@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../data.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -11,7 +12,7 @@ export class RegisterComponent implements OnInit {
   username: string = "";
   password: string = "";
 
-  constructor(private service : DataService) { }
+  constructor(private service : DataService, private router: Router) { }
 
   ngOnInit() {
   }
@@ -23,27 +24,24 @@ Register()
 
 RegisterReady(users: any[])
 {
-  let contains = false;
+    let contains = false;
 
-  console.log(users.length);
-
-  for(var i = 0; i < users.length; i++)
-  {
-    if(users[i].username === this.username)
+    for(var i = 0; i < users.length; i++)
     {
-      contains = true; 
-      break;
-    }
-  }
+      if(users[i].username === this.username)
+      {
+          contains = true; 
+          break;
+        }
+      }
 
-  console.log(this.username.length);
-  console.log(this.password.length)
-
-  if(this.username.length > 5 && !contains && this.password.length > 5)
-  {
-    this.service.RegisterUser(this.username, this.password);
-    console.log("Register");
-  }
-}
+      if(this.username.length > 5 && !contains && this.password.length > 5)
+      {
+        this.service.RegisterUser(this.username, this.password);
+        console.log("Register");
+      }
+      
+      this.router.navigateByUrl('/registerSucces');
+    } 
 
 }

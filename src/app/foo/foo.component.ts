@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from "../data.service";
-import { ActivatedRoute, Router, Route } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-foo',
@@ -9,28 +9,33 @@ import { ActivatedRoute, Router, Route } from "@angular/router";
 })
 export class FooComponent implements OnInit {
 
+  data: any[] = [];
+
   constructor(
-    private route : ActivatedRoute,
-    private router : Router,
-    private service : DataService,) { 
+    private service : DataService, private router: Router) { 
     }
 
   ngOnInit() {
   }
 
-  GoToReviewWriting()
+  GetReviews(): any[]
   {
-    this.router.navigateByUrl("/reviewData");
+    this.data.length = 0;
+    let array = this.service.GetReviews();
+
+    for(var i = array.length - 10; i < array.length; i++)
+    {
+      if(i >= 0)
+      {
+        this.data.push(array[i]);
+      }
+    }
+
+    return this.data;
   }
 
-  Login()
+  LookUpReview(i: number)
   {
-    this.router.navigateByUrl("/login");
+    this.router.navigateByUrl("/reviewData/" + this.data[i].urlID);
   }
-
-  Register()
-  {
-    this.router.navigateByUrl("/register");
-  }
-
 }

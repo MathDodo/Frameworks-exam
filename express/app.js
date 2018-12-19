@@ -43,8 +43,11 @@ app.use(
     {
       path: 
       [
+        '/api/ReviewData',
         '/api/reviewData',
+        '/api/Authentication',
         '/api/authentication',
+        '/api/Users',
         '/api/users'
       ],
     }
@@ -67,8 +70,6 @@ app.get('/api/PostReview', (req, res) => db.Getreviews({}).then((data) => res.js
 
 app.post('/api/PostReview', (req, res) => 
 {
-  console.log(req.body);
-
     db.insertData(req.body).then((newId) => 
     {
       res.json({id : newId});

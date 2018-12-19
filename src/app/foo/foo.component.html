@@ -1,4 +1,4 @@
-<button (click)="Login()" class="btn btn-primary">Login</button>
-<button (click)="Register()" class="btn btn-primary">Register</button>
-<button (click)="GoToReviewWriting()" class="btn btn-primary">WriteReview</button>
-
+<p>Newest reviews:</p>
+<p *ngFor="let item of GetReviews(); let i = index;">
+    <button (click)="LookUpReview(i)">{{item.title}}</button>
+</p>

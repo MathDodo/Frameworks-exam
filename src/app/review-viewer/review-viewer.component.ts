@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-review-viewer',
@@ -7,9 +9,37 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ReviewViewerComponent implements OnInit {
 
-  constructor() { }
+  review : any = {title: 'Loading', auther: 'Loading', url: 'Loading', rating: 'Loading', review: 'Loading'};
+  update: number = 10;
 
-  ngOnInit() {
+  constructor(private route: Router, private service: DataService) 
+  {
+
   }
 
+  ngOnInit() {
+    this.update = 10;
+  }
+
+  RealTimeUpdate()
+  {
+    var array = this.service.GetReviews();
+    let check = false;
+    
+    for(var item of array)
+    {      
+      if("/reviewData/" + item.urlID == this.route.url.toString())
+      {
+        check = true;
+        this.review = item;
+      }
+    }
+
+    if(!check && this.update == 0)
+    {
+      this.route.navigateByUrl("/pageNotFound");
+    }
+
+    this.update--;
+  }
 }

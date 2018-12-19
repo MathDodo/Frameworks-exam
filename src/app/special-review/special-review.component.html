@@ -1,0 +1,11 @@
+<P>Title:</P>
+<input type="text" [(ngModel)]="title">
+<br>
+<P>Review:</P>
+<input type="text" [(ngModel)]="review">
+<br>
+<p>Rating:</p>
+<input type="number" min="1" max="5" onkeydown="return false" [(ngModel)]="rating">
+<br>
+<br>
+<button (click)="PostReview()" class="btn btn-primary">Post review</button>
