@@ -49,6 +49,7 @@ export class DataService
       .pipe(switchMap(
         _ => this.http.get<Reviewing[]>(this.url_prefix+'/api/ReviewData'))
       ).subscribe(reviews => {
+        console.log(reviews);
         this.reviews = reviews;
     })
   }
