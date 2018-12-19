@@ -35,8 +35,6 @@ export class DataService
 
   constructor(private http : HttpClient, private auth : AuthService, private router : Router) 
   {
-    console.log('Start session');
-    this.http.get<any>(this.url_prefix+'/api/Test').subscribe(test => console.log("Got test: " + test));
     timer(0, 1000)
     .pipe(switchMap(
       _ => this.http.get<Reviewing[]>(this.url_prefix+'/api/ReviewData'))

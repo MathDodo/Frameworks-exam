@@ -22,8 +22,13 @@ Register()
    this.service.GetUsers(this)
 }
 
+IsValid(){
+  return this.username.length > 5 && this.password.length > 5
+}
+
 RegisterReady(users: any[])
 {
+  console.log(users);
     let contains = false;
 
     for(var i = 0; i < users.length; i++)
@@ -35,13 +40,13 @@ RegisterReady(users: any[])
         }
       }
 
-      if(this.username.length > 5 && !contains && this.password.length > 5)
+      if(!contains)
       {
         this.service.RegisterUser(this.username, this.password);
         console.log("Register");
+        this.router.navigateByUrl('/registerSucces');
       }
       
-      this.router.navigateByUrl('/registerSucces');
     } 
 
 }

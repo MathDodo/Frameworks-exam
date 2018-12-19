@@ -30,7 +30,7 @@ app.use((req, res, next) => {
   if ('OPTIONS' === req.method) {
     // respond with 200
     console.log("Allowing OPTIONS");
-    res.send(200);
+    res.sendStatus(200);
   }
   else {
     // move on
@@ -46,7 +46,6 @@ app.use((err, req, res, next) =>
   }
 });
 
-app.get('/api/Test', (req, res) => res.json(req.body));
 
 /**** Routes ****/
 app.get('/api/ReviewData', (req, res) => db.Getreviews({}).then((data) => res.json(data)));

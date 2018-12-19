@@ -1,7 +1,11 @@
+<p>Username and password must be more than five characters before you can register and must be free.</p>
 Username:<br> 
 <input type="text" [(ngModel)]="username">
 <br>Password:<br> 
 <input type="text" [(ngModel)]="password">
 <br>
 <br>
+<div *ngIf="IsValid();then content"></div>
+<ng-template #content>
 <button (click)="Register()" class="btn btn-primary">Register</button>
+</ng-template>
