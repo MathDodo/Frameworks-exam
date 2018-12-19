@@ -1,6 +1,6 @@
 const mongoClient = require('mongodb').MongoClient;
 const dbUrl = process.env.MONGODB_URL || 'mongodb://localhost:27017';
-const dbName = 'FrameworksExam';
+const dbName = 'frameworksexam';
 let client = {};
 
 module.exports.connect = connect;
@@ -28,7 +28,7 @@ function Getreviews(query)
 {
   return new Promise((resolve,reject) => 
   {
-    client.db(dbName).collection("Reviews").find(query).toArray().then(
+    client.db(dbName).collection("reviews").find(query).toArray().then(
       (documents) => {
         resolve(documents);
       }).catch((error) => console.error(error));
@@ -40,7 +40,7 @@ function GetUsers(query)
 {
   return new Promise((resolve,reject) => 
   {
-    client.db(dbName).collection("Users").find(query).toArray().then(
+    client.db(dbName).collection("users").find(query).toArray().then(
       (documents) => {
         resolve(documents);
       }).catch((error) => console.error(error));
@@ -54,7 +54,7 @@ function AddUser(username, password)
   {
     let user = {username : username, password: password};
 
-    client.db(dbName).collection("Users").insertOne(user).then(
+    client.db(dbName).collection("users").insertOne(user).then(
       (result) => {
         resolve(result.insertedId);
       }).catch((error) => console.error(error));
@@ -65,7 +65,7 @@ function insertData(data)
 {
   return new Promise((resolve,reject) => 
   {    
-    client.db(dbName).collection("Reviews").insertOne(data).then(
+    client.db(dbName).collection("reviews").insertOne(data).then(
       (result) => {
         console.log("Inserted Review");
         resolve(result.insertedId);
