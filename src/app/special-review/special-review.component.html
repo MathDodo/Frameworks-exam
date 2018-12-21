@@ -8,4 +8,7 @@
 <input type="number" min="1" max="5" onkeydown="return false" [(ngModel)]="rating">
 <br>
 <br>
+<div *ngIf="PatternCheck() && TitleCheck() && ReviewCheck();then content"></div>   
+<ng-template #content> 
 <button (click)="PostReview()" class="btn btn-primary">Post review</button>
+</ng-template>

@@ -44,6 +44,38 @@ export class SpecialReviewComponent implements OnInit {
     }
   }
 
+  PatternCheck()
+  {
+    var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+
+    if(pattern.test(this.url))
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  TitleCheck()
+  {
+    if(this.title != "")
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  ReviewCheck()
+  {
+    if(this.review != "")
+    {
+      return true;
+    }
+
+    return false;
+  }
+
   PostReview()
   {
     var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
